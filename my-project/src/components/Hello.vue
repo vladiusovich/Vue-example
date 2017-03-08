@@ -2,12 +2,16 @@
   <div class="hello">
     <h2>Корзина</h2>
     <h2 v-bind:title="hoverText">{{userName}}</h2>
-    <label>Поиск: </label><input type="text" v-model="search">
-    <button  v-on:click="addItem">Искать</button>
+    <label>Поиск: </label><input type="text" v-model="searchQuery" @keyup="see">
+    <select v-model="byProp">
+      <option>name</option>
+      <option>username</option>
+      <option>email</option>
+    </select>
+
     <ul>
       <li v-for="ar in array "> {{ar.name}}</li>
     </ul>
-
       <div id="table">
         <table class="table">
           <tr>
@@ -18,11 +22,11 @@
             <th>Количесво</th>
             <th>Удалить</th>
           </tr>
-          <tr v-for="item in list">
+          <tr v-for="item in searchByName">
             <td>{{item.id}}</td>
             <td><input type="text" v-bind:value=item.name v-model="item.name" @keyup.enter="saveEdit(item.name)"></td>
-            <td>{{item.username}}</td>
-            <td>{{item.name}}</td>
+            <td><input type="text" v-bind:value=item.username v-model="item.username" @keyup.enter="saveEdit(item.username)"></td>
+            <td><input type="text" v-bind:value=item.email v-model="item.email" @keyup.enter="saveEdit(item.email)"></td>
             <td><select>
                 <option  v-for="n in 10">{{n}}</option>
             </select></td>
@@ -31,6 +35,8 @@
         </table>
         <button class="submit" v-on:click>Заказать</button>
       </div>
+
+
   </div>
 </template>
 
@@ -39,6 +45,8 @@ export default {
   name: 'Name',
   data () {
     return {
+      byProp: 'name',
+      searchQuery: '',
       userName: 'Владислав Усович',
       search: "",
       list: [],
@@ -49,6 +57,19 @@ export default {
       hoverText: "Это вы"
     }
   },
+
+  computed: {
+    FilterItem: function() {
+      return this.list.slice(0,10);
+    },
+    searchByName: function() {
+      var self = this;
+      return self.list.filter(function(item) {
+        return item[self.byProp].indexOf(self.searchQuery) !== -1
+      })
+    }
+  },
+
       methods: {
         addItem: function() {
           this.list.push({ name: this.header });
@@ -58,6 +79,9 @@ export default {
         },
         saveEdit: function(value) {
           console.log(value);
+        },
+        see: function() {
+          console.log(this.byProp);
         }
       },
       created: function() {
@@ -146,8 +170,16 @@ a {
   transform: scale(1.1);
 }
 
+#table td {
+}
+
+#table td input {
+  width: 85%;
+  border-radius: 0;
+       }
+
 table td {
-  padding: .5em 2em;
+
   border: 1px solid #eee;
 }
 
@@ -164,6 +196,7 @@ table tr:hover {
 }
 
 input {
+  padding: 0.5em 1em;
   border-radius: 10px;
   border: none;
   background: rgba(100, 100, 100, 0.15);
@@ -180,7 +213,7 @@ select {
   padding: .5em;
   border-radius: 10px;
   border: none;
-  background: rgba(232, 210, 210, 0.37);
+  background: rgba(212, 210, 210, 0.37);
 
 }
 
@@ -199,6 +232,11 @@ button:hover {
 .error {
   background: #aaccaa;
 }
+
+.submit {
+  margin-top: 2em;
+}
+
 
 
 </style>
