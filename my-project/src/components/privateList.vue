@@ -100,8 +100,8 @@ body {
 }
 
 .hello {
-  width: 70%;
-  margin: 0 auto;
+  width: 60%;
+  margin: 80px auto;
   padding: 0 2em;
   border: 1px solid rgba(148, 148, 148, 0.21);
   box-shadow: 0px 0px 9px 0px rgba(148, 148, 148, 0.21);
@@ -196,10 +196,11 @@ table tr:hover {
 }
 
 input {
-  padding: 0.5em 1em;
-  border-radius: 10px;
+  padding: .8em 1.5em;
+  border-radius: 50px;
   border: none;
   background: rgba(100, 100, 100, 0.15);
+  font-size: 1rem;
   transition: .2s ease;
 }
 

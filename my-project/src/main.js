@@ -5,7 +5,8 @@ import vueResource from 'vue-resource'
 import VueRouter from 'vue-router'
 import App from './App'
 import router from './router'
-import Hello from './components/Hello.vue'
+import PrivateList from './components/privateList.vue'
+import BuyList from './components/buyList.vue'
 
 
 Vue.use(vueResource);
@@ -13,25 +14,23 @@ Vue.use(VueRouter);
 
 // Vue.config.productionTip = false;
 
-const router2 = new VueRouter({
-  mode: 'history',
-  base: __dirname,
-  routes: [
-    { path: '/', component: Hello},
-    { path: '/privateList', component: Hello}
-  ]
-});
-
 /* eslint-disable no-new */
 new Vue({
   router,
   template: `
     <div id="app">
-        <ul class="navigation">
-            <li><router-link to="/">Private List</router-link></li>
-            <li><router-link to="/privateList">Buy</router-link></li>
-        </ul>
+        <div class="header">
+            <div class="logo">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Vue.js_Logo.svg/2000px-Vue.js_Logo.svg.png"></img>
+            </div>
+            <ul class="navigation">
+                <li><router-link to="/privateList">Private List</router-link></li>
+                <li><router-link to="/buyList">Buy</router-link></li>
+            </ul>
+            
+        </div>
         <router-view></router-view>
     </div>
   `,
 }).$mount('#app');
+
