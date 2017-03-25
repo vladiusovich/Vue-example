@@ -4,16 +4,20 @@
           <div class="products-wrap">
               <ul class="products_list">
                   <li class="products_item" v-for="item in productsList" v-on:click="addToBuyList(item)"  v-bind:class="{ isAdd: item.isAdd }">
-                      <div class="products_heading"></div>
-                      <div class="wrap-img"><img
-                              v-bind:src=item.imgSrc
-                              alt=""></div>
-                   <div class="wrap_title">
-                      <span>{{item.name}}</span>
-                      <span>{{item.cost + " бел.р"}}</span>
-                      <span>{{item.availabile}}</span>
+                      <div class="products_item__heading">
+                        <div class="wrap-img"><img
+                          v-bind:src=item.imgSrc
+                          alt=""></div>
+                          <div class="wrap_title">
+                            <span class="products_item__name">{{item.name}}</span>
+                            <span class="products_item__cost">{{item.cost + " бел.р"}}</span>
+                            <span class="products_item__available">{{item.availabile}}</span>
+                          </div>
+                      </div>
+
+                   <div class="products_item__describe">
+                     <p class="product_text">{{item.describe}}</p>
                    </div>
-                   <p class="product_text">{{item.describe}}</p>
                   </li>
               </ul>
           </div>
@@ -24,15 +28,19 @@
 </template>
 
 <script>
+//  var myObject = require('store');
+
 export default {
   name: 'Name',
-  data () {
+  data: function() {
     return {
+      isVisible: true,
+      isError: false,
+      hoverText: "Это вы",
       byProp: 'name',
       searchQuery: '',
       search: "",
       isRRR: true,
-      list: [],
       productsList: [
         {
           name: "Lenovo Yoga Book",
@@ -96,13 +104,21 @@ export default {
           cost: "477,75 – 481,55",
           availabile: "Нет в наличии",
           isAdd: false
+        },
+        {
+          name: "Xiaomi Mi Pad 2 16GB",
+          id: 4,
+          imgSrc: "https://content2.onliner.by/catalog/device/header/fea38b894e1984be6369c541e5806ce4.jpg",
+          describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
+          cost: "440,00",
+          availabile: "Есть в наличии",
+          isAdd: false
         }
 
       ],
       buyList: []
     }
   },
-
   computed: {
     FilterItem: function() {
       return this.list.slice(0,10);
@@ -114,8 +130,7 @@ export default {
       })
     }
   },
-
-      methods: {
+  methods: {
         addItem: function() {
           this.list.push({ name: this.header });
         },
@@ -150,27 +165,33 @@ export default {
         see: function() {
           console.log(this.byProp);
         }
-      }
+      },
+  created: function () {
+  }
 
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style>
+  @import url('https://fonts.googleapis.com/css?family=Arimo');
 
 body {
   margin: 0;
   background: white;
-  font-family: "Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;
+
+  /*font-family: "Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Open Sans","Helvetica Neue",sans-serif;*/
+  font-family: 'Arimo', sans-serif;
   }
 
 ul {
+  padding: 0;
   list-style: none; }
 
 .products {
-  width: 100%;
+  max-width: 80%;
   margin: 80px auto;
-   }
+}
 
 .products_list {
   display: -webkit-box;
@@ -182,17 +203,20 @@ ul {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-justify-content: space-around;
+  -webkit-justify-content: space-between;
       -ms-flex-pack: distribute;
-          justify-content: space-around;
+          justify-content: space-between;
   -webkit-flex-flow: wrap;
       -ms-flex-flow: wrap;
           flex-flow: wrap; }
 
 .products_item {
-  width: 30%;
+  flex: 1 1 300px;
+  /*width: 300px;*/
+  /*height: 300px;*/
   padding: 1.5em;
-  margin-top: 2em;
+  margin-top: 1.5em;
+  margin: 1em;
   background: #fbfbff;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
@@ -201,28 +225,69 @@ ul {
           box-sizing: border-box;
   cursor: pointer;
   -webkit-transition: .2s ease;
-  transition: .2s ease; }
+  transition: .2s ease;
+}
 
+.products_item:hover {
+  box-shadow: inset 0 0 0px 1px rgba(68, 68, 68, 0.2);
+}
+
+.products_item__heading {
+  width: 100%;
+}
+
+.products_item__heading::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+
+
+.products_item__describe {
+  width: 100%;
+}
 
 .product_text {
   line-height: 1.7; }
 
 .wrap-img {
-    float: left;
+  display: block;
+  float: left;
+  width: 100px;
+  margin-right: 1em;
+}
+.wrap-img img {
+  width: 100%;
+   object-fit: contain;
+}
 
-  }
-  .wrap-img img {
-   height: 100px;
-    object-fit: contain;
- }
+.wrap_title {
+  display: block;
+}
 
-.wrap_title > span {
+.wrap_title span {
   display: block;
   line-height: 2em;
-}
-button.product__cart {
+  text-align: left;
 }
 
+.products_item__name {
+  font-size: 1rem;
+}
+
+.products_item__cost {
+  font-size: .7rem;
+}
+
+.products_item__available {
+  font-size: .7rem;
+}
+
+.product_text {
+  text-align: left;
+  font-size: .9rem;
+}
 .isAdd {
   background: #deeceb;
 }
@@ -271,6 +336,19 @@ button.product__cart {
 .navigation li a:hover {
   color: rgba(50, 50, 50, 0.78);
 }
+
+  ul {
+    transition: all .5s ease;
+  }
+
+  li {
+    transition: all .5s ease;
+
+  }
+
+  .active {
+    box-shadow: inset 0 -3px 0px 0px rgba(0, 0, 0, 0.31);
+  }
 
 
 
