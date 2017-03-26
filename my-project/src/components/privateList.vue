@@ -12,7 +12,6 @@
     <ul>
       <li v-for="ar in array "> {{ar.name}}</li>
     </ul>
-
           <div id="table">
             <transition-group tag="table" name="list-complete" class="table" v-if="list.length > 0">
               <tr>
@@ -23,14 +22,34 @@
                 <th>Количесво</th>
                 <th>Удалить</th>
               </tr>
-              <tr v-for="item in searchByName" v-bind:key="item" class="list-complete-item">
-                <td>{{item.id}}</td>
-                <td><input type="text" v-bind:value=item.name v-model="item.name" @keyup.enter="saveEdit(item.name)"></td>
-                <td><input type="text" v-bind:value=item.username v-model="item.username" @keyup.enter="saveEdit(item.username)"></td>
-                <td><input type="text" v-bind:value=item.email v-model="item.email" @keyup.enter="saveEdit(item.email)"></td>
-                <td><select>
-                    <option  v-for="n in 10">{{n}}</option>
-                </select></td>
+              <tr v-for="item in productsList" v-bind:key="item" class="list-complete-item goods-table-row">
+                <td class="">
+                  <div class="goods-table-cell">
+                    <div class="goods-table-cell__img">
+                      <img v-bind:src=item.imgSrc >
+                    </div>
+                    <div class="goods-table-cell__wrap">
+                      <span class="goods-table__name">{{item.name}}</span>
+                      <p class="goods-table__describe">{{item.describe}}</p>
+                      <p class="goods-table__availabile">{{item.availabile}}</p>
+                    </div>
+
+                  </div>
+                </td>
+                  <td class="goods-table__cell__amount">
+                        <select name="" id=""> <option  v-for="n in 10">{{n}}</option></select>
+                  </td>
+                  <td class="goods-table__cell__price">
+                      <div class="goods-table-cell__line_price">{{item.cost}} </div>
+
+
+                  </td>
+                  <td class="goods-table__cell goods-table__cell_fourth">
+                    <div class="goods-table-cell">
+                      <div class="goods-table-cell__line goods-table-cell__line_accent goods-table-cell__line_price">
+                      </div>
+                    </div>
+                  </td>
                 <td class="deleteTd" v-on:click="deleteItem(item)"><span class="delete" >X</span></td>
               </tr>
             </transition-group>
@@ -64,6 +83,9 @@ export default {
     }
   },
   computed: {
+    productsList () {
+      return this.$store.state.productsList;
+    },
     FilterItem: function() {
       return this.list.slice(0,10);
     },
@@ -72,6 +94,15 @@ export default {
       return self.list.filter(function(item) {
         return item[self.byProp].indexOf(self.searchQuery) !== -1
       })
+    },
+    FilterItem: function() {
+      return this.list.slice(0,10);
+    },
+    searchByName: function() {
+      var self = this;
+      return self.list.filter(function(item) {
+        return item[self.byProp].indexOf(self.searchQuery) !== -1
+      });
     }
   },
   methods: {
@@ -143,10 +174,49 @@ a {
 
 #table {
   margin: 2em auto;
+  border-collapse: collapse;
 }
 
 #table table {
   width: 100%;
+}
+
+.goods-table-row {
+  height: 100px;
+  border-top: 1px solid #360005;
+}
+
+
+.goods-table-cell__img {
+  float: left;
+  width: 40px;
+  padding-left: 1em;
+}
+
+.goods-table__name {
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.goods-table-cell__img > img {
+  width: 100%;
+  height: auto;
+}
+
+.goods-table-cell__wrap {
+ padding-left: 80px;
+  font-size: .8rem;
+}
+
+.goods-table__availabile {
+  color: rgba(0, 0, 0, 0.48);
+}
+.goods-table__cell__price, .goods-table__cell__amount {
+  text-align: center;
+}
+
+.goods-table-cell__line_price {
+  font-size: .75rem;
 }
 
 .delete {
@@ -158,18 +228,22 @@ a {
   transition: .2s ease;
 }
 
+.delete:hover {
+  color: rgba(232, 100, 110, 0.57);
+}
+
 .deleteTd {
     cursor: pointer;
-    background: rgba(232, 210, 210, 0.37);
       transition: .3s ease;
 
 }
 
 .deleteTd:hover {
-  background: rgba(232, 100, 110, 0.57);
+  /*background: rgba(232, 100, 110, 0.57);*/
 }
 
 #table td {
+  vertical-align: top;
 }
 
 #table td input {
@@ -177,12 +251,11 @@ a {
   border-radius: 0;
        }
 
-table td {
-
+table tr {
 }
 
 table tr:nth-of-type(2n) {
-  background: rgba(208, 209, 213, 0.26);
+  /*background: rgba(208, 209, 213, 0.26);*/
 }
 
 tr {
@@ -190,7 +263,7 @@ tr {
 }
 
 table tr:hover {
-  background: rgba(210, 232, 229, 0.47);
+  /*background: rgba(210, 232, 229, 0.47);*/
 }
 
 input {
@@ -267,7 +340,6 @@ button:hover {
 
 .list-complete-item {
   transition: all .2s;
-  display: inline-block;
   margin-top: 10px;
 }
 .list-complete-enter, .list-complete-leave-to

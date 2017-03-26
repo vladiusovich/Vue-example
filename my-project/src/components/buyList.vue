@@ -28,10 +28,9 @@
 </template>
 
 <script>
-//  var myObject = require('store');
 
 export default {
-  name: 'Name',
+  name: 'buyList',
   data: function() {
     return {
       isVisible: true,
@@ -40,86 +39,14 @@ export default {
       byProp: 'name',
       searchQuery: '',
       search: "",
-      isRRR: true,
-      productsList: [
-        {
-          name: "Lenovo Yoga Book",
-          id: 1,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/61b1107591b9b1f15ddcb22e43e67003.jpeg",
-          describe: "10.1 IPS (1920x1200), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, цвет темно-серый/черный",
-          cost: 1484,
-          availabile: "Есть в наличии",
-          isAdd: false
-        },
-        {
-          name: "Samsung Galaxy Tab A (2016)",
-          id: 2,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/a5957da85cd06bf4a4784762fa12460b.jpeg",
-          describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, LTE, цвет белый",
-          cost: "569,40 – 849,00",
-          availabile: "Нет в наличии",
-          isAdd: false
-        },
-        {
-          name: "Prestigio MultiPad Visconte V 32GB",
-          id: 3,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/5678700d1bd249c6ded3aeb59580c466.jpeg",
-          describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 2 ГБ, флэш-память 32 ГБ, док-станция, клавиатура, цвет коричневый",
-          cost: "569,40 – 849,00",
-          availabile: "Есть в наличии",
-          isAdd: false
-        },
-        {
-          name: "Xiaomi Mi Pad 2 16GB",
-          id: 4,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/fea38b894e1984be6369c541e5806ce4.jpg",
-          describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
-          cost: "440,00",
-          availabile: "Есть в наличии",
-          isAdd: false
-        },
-        {
-          name: "Samsung Galaxy Tab A ",
-          id: 5,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/2bae677f8358c38b0af336067e696f7a.jpeg",
-          describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет черный",
-          cost: "491,40 – 755,00",
-          availabile: "Есть в наличии",
-          isAdd: false
-        },
-        {
-          name: "Apple iPad Pro 9.7",
-          id: 6,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/90de37227cbc9c7876a3be59aca944e9.jpg",
-          describe: "9.7 IPS (2048x1536), iOS, флэш-память 32 ГБ, цвет золотистый",
-          cost: "1250,00 – 1719,00",
-          availabile: "Есть в наличии",
-          isAdd: false
-        },
-        {
-          name: "Digma Citi 1802 64GB 3G",
-          id: 7,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/65e3b8fbbe1bb82b4618e5ae77115eed.jpeg",
-          describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, 3G, док-станция, клавиатура, цвет темно-серый",
-          cost: "477,75 – 481,55",
-          availabile: "Нет в наличии",
-          isAdd: false
-        },
-        {
-          name: "Xiaomi Mi Pad 2 16GB",
-          id: 4,
-          imgSrc: "https://content2.onliner.by/catalog/device/header/fea38b894e1984be6369c541e5806ce4.jpg",
-          describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
-          cost: "440,00",
-          availabile: "Есть в наличии",
-          isAdd: false
-        }
+      isRRR: true
 
-      ],
-      buyList: []
     }
   },
   computed: {
+    productsList () {
+      return this.$store.state.productsList;
+    },
     FilterItem: function() {
       return this.list.slice(0,10);
     },
@@ -167,6 +94,9 @@ export default {
         }
       },
   created: function () {
+  },
+  components: {
+//    todoList
   }
 
 }
@@ -203,17 +133,17 @@ ul {
   -webkit-flex-direction: row;
       -ms-flex-direction: row;
           flex-direction: row;
-  -webkit-justify-content: space-between;
+  -webkit-justify-content: space-around;
       -ms-flex-pack: distribute;
-          justify-content: space-between;
+          justify-content: space-around;
   -webkit-flex-flow: wrap;
       -ms-flex-flow: wrap;
           flex-flow: wrap; }
 
 .products_item {
-  flex: 1 1 300px;
-  /*width: 300px;*/
-  /*height: 300px;*/
+  width: 20em;
+  height: 20em;
+  margin-bottom: 0.5em;
   padding: 1.5em;
   margin-top: 1.5em;
   margin: 1em;
@@ -337,19 +267,84 @@ ul {
   color: rgba(50, 50, 50, 0.78);
 }
 
-  ul {
-    transition: all .5s ease;
-  }
 
   li {
     transition: all .5s ease;
-
   }
 
   .active {
     box-shadow: inset 0 -3px 0px 0px rgba(0, 0, 0, 0.31);
   }
 
+  .show {
+    display: block !important;
+  }
 
+
+  .buy-list {
+    position: fixed;
+    display: block;
+    top: 3px;
+    right: 5px;
+    cursor: pointer;
+    background: rgba(207, 207, 207, 0.67);
+  }
+
+  .buy-list__icon {
+    font-size: .8rem;
+    padding: 1.4em;
+    color: #303030;
+  }
+
+  .buy-list__wrap {
+    position: absolute;
+    display: none;
+    top: 100%;
+    right: 0;
+  }
+
+  .buy-list__list {
+    width: 300px;
+    padding: 0;
+
+    background: white;
+    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .buy-list__list--empty {
+    display: block;
+    padding: 1em;
+    font-size: .9rem;
+    background: white;
+    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
+  }
+
+  .buy-list__count {
+    padding: .3em .6em;
+    border-radius: 50%;
+    background: rgb(252, 210, 18);
+  }
+
+  .list__item {
+    position: relative;
+    padding: .5em;
+    font-size: .9rem;
+    transition: .2s ease;
+  }
+
+  .list__item:hover {
+    background: rgba(210, 232, 229, 0.47);
+  }
+
+  .list__item > .delete {
+    position: absolute;
+    right: 10px;
+    font-size: 1rem;
+    transition: .2s ease;
+
+  }
+  .list__item > .delete:hover {
+    color: #ea2a1d;
+  }
 
 </style>
