@@ -13,7 +13,7 @@
       <li v-for="ar in array "> {{ar.name}}</li>
     </ul>
           <div id="table">
-            <transition-group tag="table" name="list-complete" class="table" v-if="list.length > 0">
+            <transition-group tag="table" name="list-complete" class="table" v-if="productsList.length > 0">
               <tr>
                 <th>Id</th>
                 <th>Name</th>
@@ -22,7 +22,7 @@
                 <th>Количесво</th>
                 <th>Удалить</th>
               </tr>
-              <tr v-for="item in productsList" v-bind:key="item" class="list-complete-item goods-table-row">
+              <tr v-for="item in searchBy" v-bind:key="item" class="list-complete-item goods-table-row">
                 <td class="">
                   <div class="goods-table-cell">
                     <div class="goods-table-cell__img">
@@ -53,10 +53,29 @@
                 <td class="deleteTd" v-on:click="deleteItem(item)"><span class="delete" >X</span></td>
               </tr>
             </transition-group>
-
             <p v-else>Список пуст</p>
-            <button class="submit" v-on:click>Заказать</button>
+
+            <div class="personal-data">
+              <span>Ваше имя</span><input type="text" v-model="userName"><br>
+              <span>Ваш номер телефона</span><input type="text"><br>
+              <span>Электронный адрес</span><input type="text"><br>
+              <span>Способ доставки</span><select name="" id="">
+              <option value="1">Самовывоз</option>
+              <option value="2">Курьером</option>
+              <option value="3">Почта</option>
+            </select><br>
+
+              <p class="">Общая сумма заказа:</p>
+              <p>{{getAllPrice}}</p>
+              <button class="submit" v-on:click="makeDeal">Заказать</button>
+            </div>
+
           </div>
+
+    <div class="complete"  v-bind:class="{ show: isComplete }">
+      <p>Спасибо а заказ!</p>
+      <p>Ждите звонка от сотрудника магазина.</p>
+    </div>
 
   </div>
 </template>
@@ -66,6 +85,7 @@ export default {
   name: 'Name',
   data: function() {
     return {
+      isComplete: false,
       byProp: 'name',
       searchQuery: '',
       testAnaimte: '',
@@ -84,46 +104,55 @@ export default {
   },
   computed: {
     productsList () {
-      return this.$store.state.productsList;
+      return this.$store.state.productsList.filter(function (item) {
+        return item.isAdd;
+      });
     },
-    FilterItem: function() {
-      return this.list.slice(0,10);
+    FilterItem: function () {
+      return this.list.slice(0, 10);
     },
-    searchByName: function() {
+    searchBy: function () {
       var self = this;
-      return self.list.filter(function(item) {
+      var products = this.$store.state.productsList.filter(function (item) {
+        return item.isAdd;
+      });
+      return products.filter(function (item) {
         return item[self.byProp].indexOf(self.searchQuery) !== -1
       })
     },
-    FilterItem: function() {
-      return this.list.slice(0,10);
-    },
-    searchByName: function() {
+    getAllPrice: function () {
       var self = this;
-      return self.list.filter(function(item) {
-        return item[self.byProp].indexOf(self.searchQuery) !== -1
+      var products = this.$store.state.productsList.filter(function (item) {
+        return item.isAdd;
       });
+      var result = products.reduce(function (sum, item) {
+        return sum + item.cost;
+      }, 0);
+      return result;
     }
   },
   methods: {
         addItem: function() {
           this.list.push({ name: this.header });
         },
-        deleteItem: function(item) {
-          this.list.splice(this.list.indexOf(item),1);
+        deleteItem: function (item) {
+          var cartList = this.$store.state.productsList;
+          var index = cartList.indexOf(item);
+          cartList[index].isAdd = false;
         },
         saveEdit: function(value) {
           console.log(value);
         },
         see: function() {
           console.log(this.byProp);
+        },
+        makeDeal: function () {
+          this.isComplete = !this.isComplete;
+          console.log(this.isComplete);
         }
       },
   created: function() {
-                this.$http.get('https://jsonplaceholder.typicode.com/users')
-                  .then(function(resp) {
-                      this.list = resp.data;
-                  });
+//               this.list = this.$store.state.productsList;
               }
 }
 </script>
@@ -275,7 +304,7 @@ input {
 }
 
 input:focus {
-  border-color: rgb(40, 238, 162);
+  border-color: rgb(162, 159, 159);
   outline: none;
   /*background: rgba(100, 100, 100, 0.06);*/
 }
@@ -316,6 +345,24 @@ button:hover {
   margin-top: 2em;
 }
 
+
+.complete {
+  position: absolute;
+  display: none;
+  top: 50%;
+  left: 50%;
+  padding: 2em;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.77);
+  box-shadow: 0 2px 2px 1px rgba(0,0,0,.15);
+  font-weight: 600;
+  z-index: 10;
+  transform: transition(50%,50%);
+}
+
+.complete .show {
+  display: block;
+}
 
 
 .fade-enter-active, .fade-leave-active {

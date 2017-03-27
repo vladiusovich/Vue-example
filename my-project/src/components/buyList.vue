@@ -3,7 +3,7 @@
       <div class="products">
           <div class="products-wrap">
               <ul class="products_list">
-                  <li class="products_item" v-for="item in productsList" v-on:click="addToBuyList(item)"  v-bind:class="{ isAdd: item.isAdd }">
+                  <li class="products_item" v-for="item in productsList"   v-bind:class="{ isAdd: item.isAdd }">
                       <div class="products_item__heading">
                         <div class="wrap-img"><img
                           v-bind:src=item.imgSrc
@@ -18,6 +18,10 @@
                    <div class="products_item__describe">
                      <p class="product_text">{{item.describe}}</p>
                    </div>
+                    <button type="submit" class="add-to-cart" v-on:click="addToBuyList(item)">
+                      <span v-bind:class="{ 'add-to-cart--hidden': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
+                      <span v-bind:class="{ 'add-to-cart__remove--show': item.isAdd }" class="add-to-cart__remove">X</span>
+                    </button>
                   </li>
               </ul>
           </div>
@@ -30,6 +34,7 @@
 <script>
 
 export default {
+  t: false,
   name: 'buyList',
   data: function() {
     return {
@@ -141,6 +146,7 @@ ul {
           flex-flow: wrap; }
 
 .products_item {
+  position: relative;
   width: 20em;
   height: 20em;
   margin-bottom: 0.5em;
@@ -153,7 +159,6 @@ ul {
   border: 1px solid rgba(0, 0, 0, 0.09);
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  cursor: pointer;
   -webkit-transition: .2s ease;
   transition: .2s ease;
 }
@@ -219,7 +224,7 @@ ul {
   font-size: .9rem;
 }
 .isAdd {
-  background: #deeceb;
+  background: rgba(206, 206, 206, 0.59);;
 }
 
 .logo {
@@ -246,6 +251,7 @@ ul {
      letter-spacing: 1px;
      font-weight: 100;
      box-sizing: border-box;
+    z-index: 10;
 }
 
 
@@ -287,13 +293,17 @@ ul {
     top: 3px;
     right: 5px;
     cursor: pointer;
-    background: rgba(207, 207, 207, 0.67);
+    /*background: rgba(207, 207, 207, 0.67);*/
   }
 
   .buy-list__icon {
-    font-size: .8rem;
-    padding: 1.4em;
+    padding: .8em;
     color: #303030;
+  }
+
+  .buy-list__icon > span:first-child {
+    font-size: 1rem;
+    color: #da972d;
   }
 
   .buy-list__wrap {
@@ -301,12 +311,12 @@ ul {
     display: none;
     top: 100%;
     right: 0;
+    z-index: 100;
   }
 
   .buy-list__list {
     width: 300px;
     padding: 0;
-
     background: white;
     box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
   }
@@ -320,9 +330,17 @@ ul {
   }
 
   .buy-list__count {
-    padding: .3em .6em;
-    border-radius: 50%;
-    background: rgb(252, 210, 18);
+    display: inline-block;
+    font: 13px/19px Arial, Helvetica Neue, Helvetica, sans-serif;
+    border: 1px solid rgba(205, 69, 0, 0.3);
+    border-radius: 2px;
+    color: #da972d;
+    background-clip: padding-box;
+    vertical-align: top;
+    padding: 0 6px;
+    margin-left: 6px;
+    -webkit-transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .list__item {
@@ -346,5 +364,37 @@ ul {
   .list__item > .delete:hover {
     color: #ea2a1d;
   }
+
+.add-to-cart {
+  position: absolute;
+  right: 1em;
+  bottom: 1em;
+  width: 50px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: .2s ease;
+  }
+
+.add-to-cart:focus {
+    outline: none;
+}
+.add-to-cart--hidden {
+  display: none;
+}
+  .add-to-cart__img >img {
+    width: 100%;
+  }
+.add-to-cart__remove {
+  display: none;
+  font-size: 2rem;
+  color: #3973fb;
+  transition: .2s ease;
+}
+
+.add-to-cart__remove--show {
+  display: block;
+}
+
 
 </style>
