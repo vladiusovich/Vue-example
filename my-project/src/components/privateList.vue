@@ -1,83 +1,89 @@
 <template>
-  <div class="hello">
-    <h2>Корзина</h2>
-    <h2 v-bind:title="hoverText">{{userName}}</h2>
-    <label>Поиск: </label><input type="text" v-model="searchQuery" @keyup="see">
-    <select v-model="byProp">
-      <option>name</option>
-      <option>username</option>
-      <option>email</option>
-    </select>
-
-    <ul>
-      <li v-for="ar in array "> {{ar.name}}</li>
-    </ul>
-          <div id="table">
-            <transition-group tag="table" name="list-complete" class="table" v-if="productsList.length > 0">
-              <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>User name</th>
-                <th>Цена</th>
-                <th>Количесво</th>
-                <th>Удалить</th>
-              </tr>
-              <tr v-for="item in searchBy" v-bind:key="item" class="list-complete-item goods-table-row">
-                <td class="">
-                  <div class="goods-table-cell">
-                    <div class="goods-table-cell__img">
-                      <img v-bind:src=item.imgSrc >
-                    </div>
-                    <div class="goods-table-cell__wrap">
-                      <span class="goods-table__name">{{item.name}}</span>
-                      <p class="goods-table__describe">{{item.describe}}</p>
-                      <p class="goods-table__availabile">{{item.availabile}}</p>
-                    </div>
-
-                  </div>
-                </td>
-                  <td class="goods-table__cell__amount">
-                        <select name="" id=""> <option  v-for="n in 10">{{n}}</option></select>
-                  </td>
-                  <td class="goods-table__cell__price">
-                      <div class="goods-table-cell__line_price">{{item.cost}} </div>
+  <div class="private-list__wrap">
+    <div class="private-list">
+      <p class="private-list__basket">Корзина</p>
+      <p class="private-list__name" v-bind:title="hoverText">{{userName}}</p>
+      <label>Поиск: </label><input type="text" v-model="searchQuery" @keyup="see">
 
 
-                  </td>
-                  <td class="goods-table__cell goods-table__cell_fourth">
-                    <div class="goods-table-cell">
-                      <div class="goods-table-cell__line goods-table-cell__line_accent goods-table-cell__line_price">
-                      </div>
-                    </div>
-                  </td>
-                <td class="deleteTd" v-on:click="deleteItem(item)"><span class="delete" >X</span></td>
-              </tr>
-            </transition-group>
-            <p v-else>Список пуст</p>
+      <ul>
+        <li v-for="ar in array "> {{ar.name}}</li>
+      </ul>
+      <div id="table">
+        <transition-group tag="table" name="list-complete" class="table" v-if="productsList.length > 0">
+          <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>User name</th>
+            <th>Цена</th>
+            <th>Количесво</th>
+            <th>Удалить</th>
+          </tr>
+          <tr v-for="item in searchBy" v-bind:key="item" class="list-complete-item goods-table-row">
+            <td class="">
+              <div class="goods-table-cell">
+                <div class="goods-table-cell__img">
+                  <img v-bind:src=item.imgSrc >
+                </div>
+                <div class="goods-table-cell__wrap">
+                  <span class="goods-table__name">{{item.name}}</span>
+                  <p class="goods-table__describe">{{item.describe}}</p>
+                  <p class="goods-table__availabile">{{item.availabile}}</p>
+                </div>
 
-            <div class="personal-data">
-              <span>Ваше имя</span><input type="text" v-model="userName"><br>
-              <span>Ваш номер телефона</span><input type="text"><br>
-              <span>Электронный адрес</span><input type="text"><br>
-              <span>Способ доставки</span><select name="" id="">
-              <option value="1">Самовывоз</option>
-              <option value="2">Курьером</option>
-              <option value="3">Почта</option>
-            </select><br>
+              </div>
+            </td>
+            <td class="goods-table__cell__amount">
+              <select name="" id=""> <option  v-for="n in 10">{{n}}</option></select>
+            </td>
+            <td class="goods-table__cell__price">
+              <div class="goods-table-cell__line_price">{{item.cost}} {{currency}} </div>
 
-              <p class="">Общая сумма заказа:</p>
-              <p>{{getAllPrice}}</p>
-              <button class="submit" v-on:click="makeDeal">Заказать</button>
-            </div>
 
-          </div>
+            </td>
+            <td class="goods-table__cell goods-table__cell_fourth">
+              <div class="goods-table-cell">
+                <div class="goods-table-cell__line goods-table-cell__line_accent goods-table-cell__line_price">
+                </div>
+              </div>
+            </td>
+            <td class="deleteTd" v-on:click="deleteItem(item)"><span class="delete" >X</span></td>
+          </tr>
+        </transition-group>
+        <p v-else>Список пуст</p>
 
-    <div class="complete"  v-bind:class="{ show: isComplete }">
-      <p>Спасибо а заказ!</p>
-      <p>Ждите звонка от сотрудника магазина.</p>
+        <div class="complete"  v-bind:class="{ show: isComplete }">
+          <p>Спасибо за заказ, {{getFirstName}}!</p>
+          <p>Ждите звонка от сотрудника магазина.</p>
+        </div>
     </div>
 
   </div>
+
+    <div class="personal-data">
+      <div class="personal-data__name">
+        <span class="personal-data__name">Ваше имя</span><input type="text" v-model="userName"><br>
+      </div>
+      <div class="personal-data__phone">
+        <span class="personal-data__phone">Ваш номер телефона</span><input type="text" v-model="phone"><b
+      </div>
+      <div class="personal-data__type">
+        <span class="personal-data__type">Способ доставки</span><select name=""  v-model="personalType">
+        <option value="1">Самовывоз</option>
+        <option value="2">Курьером</option>
+        <option value="3">Почта</option>
+      </select><br>
+      </div>
+      <div class="personal-data__adress"  :class=" { show: getAdress } ">
+        <span>Ваш адрес</span><input type="text" v-model="adress" placeholder="Ваш адрес"><br>
+
+      </div>
+      <p class="">Общая сумма заказа:</p>
+      <p><b>{{getAllPrice}} {{currency}}</b></p>
+      <button class="submit" v-on:click="makeDeal">Заказать</button>
+    </div>
+  </div>
+
 </template>
 
 <script>
@@ -85,13 +91,18 @@ export default {
   name: 'Name',
   data: function() {
     return {
+      currency: " руб.",
       isComplete: false,
       byProp: 'name',
       searchQuery: '',
       testAnaimte: '',
       userName: 'Владислав Усович',
+      phone: '+375-',
+      adress: '',
+      index: '',
       search: "",
       list: [],
+      personalType: 1,
       array: [
       ],
       isVisible: true,
@@ -103,6 +114,15 @@ export default {
     }
   },
   computed: {
+    getFirstName() {
+      var arr = this.userName.split(' ');
+      return arr[0];
+    },
+    getAdress() {
+      if (this.personalType == 1) {
+        return false;
+      } else return true;
+    },
     productsList () {
       return this.$store.state.productsList.filter(function (item) {
         return item.isAdd;
@@ -126,12 +146,13 @@ export default {
         return item.isAdd;
       });
       var result = products.reduce(function (sum, item) {
-        return sum + item.cost;
+        return sum + parseInt(item.cost);
       }, 0);
       return result;
     }
   },
   methods: {
+
         addItem: function() {
           this.list.push({ name: this.header });
         },
@@ -160,15 +181,64 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
-body {
+* {
+  box-sizing: border-box;
 }
 
-.hello {
-  width: 60%;
-  margin: 80px auto;
+.private-list__basket {
+  text-align: center;
+  font-size: 1.3rem;
+  font-weight: 800;
+}
+
+.private-list__wrap {
+  width: 80%;
+  margin: 20px auto;
+}
+
+.private-list {
+  width: 68%;
+  float: left;
+  display: inline-block;
   padding: 0 2em;
   border: 1px solid rgba(148, 148, 148, 0.21);
 }
+
+.personal-data {
+  width: 30%;
+  float: right;
+  display: inline-block;
+  padding: 1em;
+  border: 1px solid rgba(148, 148, 148, 0.21);
+  box-sizing: border-box;
+}
+
+.personal-data select {
+  border: 1px solid rgba(148, 148, 148, 0.21);
+}
+
+.personal-data input:hover, .personal-data select:hover {
+  border: 1px solid rgba(148, 148, 148, 0.91);
+}
+
+.personal-data input, .personal-data select {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1em;
+  box-sizing: border-box;
+}
+
+.personal-data span {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 5px;
+}
+
+.personal-data__adress {
+  display: none;
+}
+
 h1, h2 {
   font-weight: normal;
 }
@@ -319,7 +389,7 @@ table input {
 select {
   padding: .5em;
   border: none;
-  background: rgba(212, 210, 210, 0.37);
+  background: rgba(217, 208, 214, 0.1);
 
 }
 
@@ -349,20 +419,22 @@ button:hover {
 .complete {
   position: absolute;
   display: none;
-  top: 50%;
-  left: 50%;
+  top: 50vh;
+  left: 50vw;
   padding: 2em;
   background: #fff;
   color: rgba(0, 0, 0, 0.77);
   box-shadow: 0 2px 2px 1px rgba(0,0,0,.15);
   font-weight: 600;
   z-index: 10;
-  transform: transition(50%,50%);
+  transform: translate(-50%,-50%);
 }
 
-.complete .show {
-  display: block;
+.show, .complete .show {
+  display: block !important;
 }
+
+
 
 
 .fade-enter-active, .fade-leave-active {
@@ -397,6 +469,7 @@ button:hover {
 .list-complete-leave-active {
   position: absolute;
 }
+
 
 
 
