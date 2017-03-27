@@ -13,7 +13,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1920x1200), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, цвет темно-серый/черный",
         cost: 1484,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A (2016)",
@@ -22,7 +23,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, LTE, цвет белый",
         cost: 849,
         availabile: "Нет в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Prestigio MultiPad Visconte V 32GB",
@@ -31,7 +33,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 2 ГБ, флэш-память 32 ГБ, док-станция, клавиатура, цвет коричневый",
         cost: 4049,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Xiaomi Mi Pad 2 16GB",
@@ -40,7 +43,8 @@ export const store = new Vuex.Store({
         describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
         cost: 440,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A ",
@@ -49,7 +53,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет черный",
         cost: 755,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Lenovo Yoga Book",
@@ -58,7 +63,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1920x1200), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, цвет темно-серый/черный",
         cost: 1484,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A (2016)",
@@ -67,7 +73,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, LTE, цвет белый",
         cost: 849,
         availabile: "Нет в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Prestigio MultiPad Visconte V 32GB",
@@ -76,7 +83,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 2 ГБ, флэш-память 32 ГБ, док-станция, клавиатура, цвет коричневый",
         cost: 849,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Xiaomi Mi Pad 2 16GB",
@@ -85,7 +93,8 @@ export const store = new Vuex.Store({
         describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
         cost: "440,00",
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A ",
@@ -94,7 +103,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет черный",
         cost:  755,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Lenovo Yoga Book",
@@ -103,7 +113,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1920x1200), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, цвет темно-серый/черный",
         cost: 1484,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A (2016)",
@@ -112,7 +123,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, LTE, цвет белый",
         cost: 569,
         availabile: "Нет в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Prestigio MultiPad Visconte V 32GB",
@@ -121,7 +133,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 2 ГБ, флэш-память 32 ГБ, док-станция, клавиатура, цвет коричневый",
         cost: 5694,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Xiaomi Mi Pad 2 16GB",
@@ -130,7 +143,8 @@ export const store = new Vuex.Store({
         describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
         cost: "440,00",
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Samsung Galaxy Tab A ",
@@ -139,7 +153,8 @@ export const store = new Vuex.Store({
         describe: "10.1 (1920x1200), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет черный",
         cost: 491,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Apple iPad Pro 9.7",
@@ -148,7 +163,8 @@ export const store = new Vuex.Store({
         describe: "9.7 IPS (2048x1536), iOS, флэш-память 32 ГБ, цвет золотистый",
         cost: 1719,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Digma Citi 1802 64GB 3G",
@@ -157,7 +173,8 @@ export const store = new Vuex.Store({
         describe: "10.1 IPS (1280x800), Windows 10, ОЗУ 4 ГБ, флэш-память 64 ГБ, 3G, док-станция, клавиатура, цвет темно-серый",
         cost: 477,
         availabile: "Нет в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       },
       {
         name: "Xiaomi Mi Pad 2 16GB",
@@ -166,7 +183,8 @@ export const store = new Vuex.Store({
         describe: "7.9 IPS (2048x1536), Android, ОЗУ 2 ГБ, флэш-память 16 ГБ, цвет серый/черный",
         cost: 446,
         availabile: "Есть в наличии",
-        isAdd: false
+        isAdd: false,
+        count: 1
       }
 
     ],

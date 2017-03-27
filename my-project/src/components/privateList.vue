@@ -2,7 +2,6 @@
   <div class="private-list__wrap">
     <div class="private-list">
       <p class="private-list__basket">Корзина</p>
-      <p class="private-list__name" v-bind:title="hoverText">{{userName}}</p>
       <label>Поиск: </label><input type="text" v-model="searchQuery" @keyup="see">
 
 
@@ -34,7 +33,7 @@
               </div>
             </td>
             <td class="goods-table__cell__amount">
-              <select name="" id=""> <option  v-for="n in 10">{{n}}</option></select>
+              <select name="" id="" v-model="item.count"> <option  v-for="n in 10">{{n}}</option></select>
             </td>
             <td class="goods-table__cell__price">
               <div class="goods-table-cell__line_price">{{item.cost}} {{currency}} </div>
@@ -146,7 +145,7 @@ export default {
         return item.isAdd;
       });
       var result = products.reduce(function (sum, item) {
-        return sum + parseInt(item.cost);
+        return sum + parseInt(item.cost)*item.count;
       }, 0);
       return result;
     }
