@@ -1,9 +1,11 @@
 <template>
   <div class="wrap">
       <div class="products">
-          <div class="products-wrap">
-              <ul class="products_list">
-                  <li class="products_item" v-for="item in productsList"   v-bind:class="{ isAdd: item.isAdd }">
+        <div class="products_list__search">
+          <label>Поиск: </label><input type="text" v-model="searchQuery">
+        </div>
+              <transition-group tag="ul" name="list-complete" class="products_list" v-if="productsFilter.length > 0">
+                <li class="products_item" v-for="item in productsFilter" :key="item"  v-bind:class="{ isAdd: item.isAdd }">
                       <div class="products_item__heading">
                         <div class="wrap-img"><img
                           v-bind:src=item.imgSrc
@@ -19,11 +21,11 @@
                      <p class="product_text">{{item.describe}}</p>
                    </div>
                     <button type="submit" class="add-to-cart" v-on:click="addToBuyList(item)">
-                      <span v-bind:class="{ 'add-to-cart--hidden': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
-                      <span v-bind:class="{ 'add-to-cart__remove--show': item.isAdd }" class="add-to-cart__remove">X</span>
+                      <span v-bind:class="{ 'add-to-cart--hiddesn': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
+                      <!--<span v-bind:class="{ 'add-to-cart__added&#45;&#45;show': item.isAdd }" class="add-to-cart__added">Добавлено</span>-->
                     </button>
                   </li>
-              </ul>
+            </transition-group>
           </div>
       </div>
   </div>
@@ -38,6 +40,8 @@ export default {
   name: 'buyList',
   data: function() {
     return {
+      productListLocal: this.$store.state.productsList,
+      searchQuery: '',
       isVisible: true,
       isError: false,
       hoverText: "Это вы",
@@ -45,22 +49,25 @@ export default {
       searchQuery: '',
       search: "",
       isRRR: true
-
     }
   },
   computed: {
     productsList () {
-      return this.$store.state.productsList;
+      return  this.$store.state.productsList;
     },
-    FilterItem: function() {
-      return this.list.slice(0,10);
-    },
+    productsFilter: function() {
+      var self = this;
+      return  this.$store.state.productsList.filter(function(item) {
+        return item['name'].indexOf(self.searchQuery) !== -1;
+      });
+      },
     searchByName: function() {
       var self = this;
       return self.list.filter(function(item) {
-        return item[self.byProp].indexOf(self.searchQuery) !== -1
+        return item[self.byProp].indexOf(self.searchQuery) !== -1;
       })
     }
+
   },
   methods: {
         addItem: function() {
@@ -72,23 +79,22 @@ export default {
         saveEdit: function(value) {
           console.log(value);
         },
-
         addToBuyList: function(item) {
-          if (item.isAdd == false) {
+          var prList = this.$store.state.privateListEmpty;
+          var index = prList.indexOf(item);
+
+          if (!item.isAdd) {
+            prList.push(item);
             item.isAdd = true;
-          } else {
-              item.isAdd = false;
-          }
-        },
-
-        addToByList: function(id) {
-          var bl = this.buyList;
-          if (bl.indexOf(id) == -1) {
-            bl.push(id);
-          }
-          console.log(this.buyList);
-        },
-
+            return;
+          } else if(item.isAdd) {
+            var count = parseInt(prList[index].count);
+            prList[index];
+            prList[index].count = count + 1;
+            console.log(prList[index].count);
+              return;
+            };
+          },
         deleteFromByList: function(id) {
          var bl = this.buyList;
           bl.splice(this.list.indexOf(id),1);
@@ -151,6 +157,8 @@ ul {
 
 }
 
+
+
   .products_list::before,.products_list::after {
     display: block;
   }
@@ -158,6 +166,14 @@ ul {
     content: "";
     display: block;
     clear: both;
+  }
+
+  .products_list__search {
+    padding: 1em 0;
+  }
+
+  .products_list__search input {
+    padding: .5em 1em;
   }
 
   .products_item {
@@ -168,17 +184,16 @@ ul {
   height: 20em;
   padding: 1.5em;
   margin: .5em;
-  background: #fbfbff;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
-  border: 1px solid rgba(0, 0, 0, 0.09);
+  /*border: 1px solid rgba(0, 0, 0, 0.09);*/
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   -webkit-transition: .2s ease;
   transition: .2s ease;
 }
 
-.products_item:hover {
+.products_item:hover, .products_item .isAdd:hover {
   box-shadow: inset 0 0 0px 1px rgba(68, 68, 68, 0.2);
 }
 
@@ -239,7 +254,8 @@ ul {
   font-size: .9rem;
 }
 .isAdd {
-  background: rgba(206, 206, 206, 0.59);;
+  /*background: rgba(244, 244, 244, 0.52);*/
+  box-shadow: inset 2px 3px 14px 2px rgba(34, 34, 34, 0.1) !important;
 }
 
 .logo {
@@ -301,101 +317,6 @@ ul {
   }
 
 
-  .buy-list {
-    position: fixed;
-    display: block;
-    top: 3px;
-    right: 5px;
-    cursor: pointer;
-    z-index: 100;
-    /*background: rgba(207, 207, 207, 0.67);*/
-  }
-
-  .buy-list__icon {
-    padding: .8em;
-    color: #303030;
-    transition: all .5s ease;
-  }
-
-  .buy-list__icon > span:first-child {
-    font-size: 1rem;
-    color: #da972d;
-    transition: all .5s ease;
-  }
-
-  .buy-list__icon > span:first-child {
-    transition: all .5s ease;
-
-  }
-
-  .buy-list__icon:hover > span:first-child  {
-    color: #da6735;
-    text-decoration: underline;
-  }
-
-  .buy-list__icon:hover > .buy-list__count {
-    border-color: #da6735;
-    color: #da6735;
-  }
-
-  .buy-list__wrap {
-    position: absolute;
-    display: none;
-    top: 100%;
-    right: 0;
-    z-index: 100;
-  }
-
-  .buy-list__list {
-    width: 300px;
-    padding: 0;
-    background: white;
-    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
-  }
-
-  .buy-list__list--empty {
-    display: block;
-    padding: 1em;
-    font-size: .9rem;
-    background: white;
-    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
-  }
-
-  .buy-list__count {
-    display: inline-block;
-    font: 13px/19px Arial, Helvetica Neue, Helvetica, sans-serif;
-    border: 1px solid rgba(205, 69, 0, 0.3);
-    border-radius: 2px;
-    color: #da972d;
-    background-clip: padding-box;
-    vertical-align: top;
-    padding: 0 6px;
-    margin-left: 6px;
-    -webkit-transition: border-color 0.2s ease;
-    transition: border-color 0.2s ease;
-  }
-
-  .list__item {
-    position: relative;
-    padding: .5em;
-    font-size: .9rem;
-    transition: .2s ease;
-  }
-
-  .list__item:hover {
-    background: rgba(210, 232, 229, 0.47);
-  }
-
-  .list__item > .delete {
-    position: absolute;
-    right: 10px;
-    font-size: 1rem;
-    transition: .2s ease;
-
-  }
-  .list__item > .delete:hover {
-    color: #ea2a1d;
-  }
 
 .add-to-cart {
   position: absolute;
@@ -417,16 +338,32 @@ ul {
   .add-to-cart__img >img {
     width: 100%;
   }
-.add-to-cart__remove {
+
+.add-to-cart__added {
   display: none;
-  font-size: 2rem;
+  position: absolute;
+  bottom: .5em;
+  right: 1em;
   color: #3973fb;
   transition: .2s ease;
 }
 
-.add-to-cart__remove--show {
+.add-to-cart__added--show {
   display: block;
 }
+
+  .list-complete-item {
+    transition: all .2s;
+    margin-top: 10px;
+  }
+  .list-complete-enter, .list-complete-leave-to
+    /* .list-complete-leave-active для <2.1.8 */ {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  .list-complete-leave-active {
+    position: absolute;
+  }
 
 
 </style>

@@ -188,6 +188,14 @@ export const store = new Vuex.Store({
       }
 
     ],
-    privateList: []
+    privateListEmpty: []
+  },
+  mutations: {
+    deleteItem: function (state, item) {
+      var prList = state.privateListEmpty;
+      var index = prList.indexOf(item);
+      prList.splice(index,1);
+      item.isAdd = false;
+    }
   }
 });

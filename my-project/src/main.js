@@ -27,9 +27,17 @@ new Vue({
   store,
   data: function() {
     return {
+
+      productList2: this.$store.state.productList
     }
   },
-
+  computed: {
+    productsListFilter () {
+      return this.$store.state.productsList.filter(function (item) {
+        return item.isAdd;
+      });
+    }
+  },
   methods: {
     showModal: function () {
       console.log(this);
@@ -56,6 +64,7 @@ new Vue({
                 <li><router-link to="/privateList">Корзина</router-link></li>
                 <li><router-link to="/buyList">Товары</router-link></li>
             </ul>
+           
               <shop-cart v-bind:list="productsList"></shop-cart>
 
         </div>

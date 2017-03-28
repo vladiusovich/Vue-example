@@ -2,9 +2,7 @@
   <div class="private-list__wrap">
     <div class="private-list">
       <p class="private-list__basket">Корзина</p>
-      <label>Поиск: </label><input type="text" v-model="searchQuery" @keyup="see">
-
-
+      <label>Поиск: </label><input type="text" v-model="searchQuery">
       <ul>
         <li v-for="ar in array "> {{ar.name}}</li>
       </ul>
@@ -73,7 +71,7 @@
         <option value="3">Почта</option>
       </select><br>
       </div>
-      <div class="personal-data__adress"  :class=" { show: getAdress } ">
+      <div class="personal-data__adress"  :class=" { 'show-slide': getAdress } ">
         <span>Ваш адрес</span><input type="text" v-model="adress" placeholder="Ваш адрес"><br>
 
       </div>
@@ -92,7 +90,6 @@ export default {
     return {
       currency: " руб.",
       isComplete: false,
-      byProp: 'name',
       searchQuery: '',
       testAnaimte: '',
       userName: 'Владислав Усович',
@@ -123,8 +120,8 @@ export default {
       } else return true;
     },
     productsList () {
-      return this.$store.state.productsList.filter(function (item) {
-        return item.isAdd;
+      return this.$store.state.privateListEmpty.filter(function (item) {
+        return item;
       });
     },
     FilterItem: function () {
@@ -132,8 +129,8 @@ export default {
     },
     searchBy: function () {
       var self = this;
-      var products = this.$store.state.productsList.filter(function (item) {
-        return item.isAdd;
+      var products = this.$store.state.privateListEmpty.filter(function (item) {
+        return item;
       });
       return products.filter(function (item) {
         return item[self.byProp].indexOf(self.searchQuery) !== -1
@@ -141,8 +138,8 @@ export default {
     },
     getAllPrice: function () {
       var self = this;
-      var products = this.$store.state.productsList.filter(function (item) {
-        return item.isAdd;
+      var products = this.$store.state.privateListEmpty.filter(function (item) {
+        return item;
       });
       var result = products.reduce(function (sum, item) {
         return sum + parseInt(item.cost)*item.count;
@@ -156,15 +153,7 @@ export default {
           this.list.push({ name: this.header });
         },
         deleteItem: function (item) {
-          var cartList = this.$store.state.productsList;
-          var index = cartList.indexOf(item);
-          cartList[index].isAdd = false;
-        },
-        saveEdit: function(value) {
-          console.log(value);
-        },
-        see: function() {
-          console.log(this.byProp);
+          this.$store.commit('deleteItem', item);
         },
         makeDeal: function () {
           this.isComplete = !this.isComplete;
@@ -235,7 +224,14 @@ export default {
 }
 
 .personal-data__adress {
-  display: none;
+  opacity: 0;
+  transform: translateY(100%);
+  transition: all .2s ease;
+}
+
+.personal-data__adress.show-slide {
+  opacity: 1 !important;
+  transform: translateX(0) !important;
 }
 
 h1, h2 {
