@@ -2,7 +2,7 @@
   <div class="wrap">
       <div class="products">
         <div class="products_list__search">
-          <label>Поиск: </label><input type="text" v-model="searchQuery">
+          <input type="text" v-model="searchQuery" placeholder="Введите название товара">
         </div>
               <transition-group tag="ul" name="list-complete" class="products_list" v-if="productsFilter.length > 0">
                 <li class="products_item" v-for="item in productsFilter" :key="item"  v-bind:class="{ isAdd: item.isAdd }">
@@ -20,10 +20,11 @@
                    <div class="products_item__describe">
                      <p class="product_text">{{item.describe}}</p>
                    </div>
-                    <button type="submit" class="add-to-cart" v-on:click="addToBuyList(item)">
+                    <button type="submit" class="add-to-cart" @click.alt="startMove" v-on:click="addToBuyList(item,$event)" >
                       <span v-bind:class="{ 'add-to-cart--hiddesn': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
-                      <!--<span v-bind:class="{ 'add-to-cart__added&#45;&#45;show': item.isAdd }" class="add-to-cart__added">Добавлено</span>-->
+                      <span class="add-to-cart__add-more">+1</span>
                     </button>
+                  <div  v-bind:class="{ isAdded: item.isAdd }" class="add-to-cart__added"><span>В корзине</span></div>
                   </li>
             </transition-group>
           </div>
@@ -47,8 +48,7 @@ export default {
       hoverText: "Это вы",
       byProp: 'name',
       searchQuery: '',
-      search: "",
-      isRRR: true
+      search: ""
     }
   },
   computed: {
@@ -70,19 +70,35 @@ export default {
 
   },
   methods: {
-        addItem: function() {
-          this.list.push({ name: this.header });
+        startMove: function (event) {
+          var t = event.target;
+          console.log(t);
+          t.classList.add("add-to-cart__add-more--move");
+          console.log(t);
+          setTimeout(function () {
+            t.classList.remove("add-to-cart__add-more--move");
+            console.log("setTimeout");
+          },300);
+          console.log(t);
         },
-        deleteItem: function(item) {
-          this.list.splice(this.list.indexOf(item),1);
-        },
-        saveEdit: function(value) {
-          console.log(value);
-        },
-        addToBuyList: function(item) {
+    endMove: function (event) {
+      var t = event.target;
+      console.log(t);
+      t.classList.remove("add-to-cart__add-more--move");
+    },
+      //Сделано по тупому. Нельзя так. Найди нормальный способ
+        addToBuyList: function(item, event) {
+          var t = event.target;
+          t.classList.add("add-to-cart__add-more--move");
+          setTimeout(function () {
+            t.classList.remove("add-to-cart__add-more--move");
+            console.log("setTimeout");
+          },300);
+          console.log(t);
+
+
           var prList = this.$store.state.privateListEmpty;
           var index = prList.indexOf(item);
-
           if (!item.isAdd) {
             prList.push(item);
             item.isAdd = true;
@@ -91,7 +107,6 @@ export default {
             var count = parseInt(prList[index].count);
             prList[index];
             prList[index].count = count + 1;
-            console.log(prList[index].count);
               return;
             };
           },
@@ -99,9 +114,6 @@ export default {
          var bl = this.buyList;
           bl.splice(this.list.indexOf(id),1);
           console.log(this.buyList);
-        },
-        see: function() {
-          console.log(this.byProp);
         }
       },
   created: function () {
@@ -170,10 +182,16 @@ ul {
 
   .products_list__search {
     padding: 1em 0;
+    width: 50%;
   }
 
   .products_list__search input {
-    padding: .5em 1em;
+    width: 100%;
+  }
+
+  .products_list__search input {
+    padding: .8em 1em;
+    font-size: 1rem;
   }
 
   .products_item {
@@ -184,6 +202,7 @@ ul {
   height: 20em;
   padding: 1.5em;
   margin: .5em;
+    overflow: hidden;
   -webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
   /*border: 1px solid rgba(0, 0, 0, 0.09);*/
@@ -242,7 +261,7 @@ ul {
 }
 
 .products_item__cost {
-  font-size: .7rem;
+  font-size: 1rem;
 }
 
 .products_item__available {
@@ -255,7 +274,7 @@ ul {
 }
 .isAdd {
   /*background: rgba(244, 244, 244, 0.52);*/
-  box-shadow: inset 2px 3px 14px 2px rgba(34, 34, 34, 0.1) !important;
+  box-shadow: inset 0px -7px 0px 0px rgba(160, 160, 160, 0.29) !important;
 }
 
 .logo {
@@ -326,7 +345,13 @@ ul {
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 2;
+
   transition: .2s ease;
+  }
+
+  .add-to-cart:hover {
+    transform: scale(1.1);
   }
 
 .add-to-cart:focus {
@@ -339,14 +364,53 @@ ul {
     width: 100%;
   }
 
-.add-to-cart__added {
-  display: none;
+.add-to-cart__add-more {
   position: absolute;
-  bottom: .5em;
-  right: 1em;
-  color: #3973fb;
+  top: 0;
+  padding: .5em;
+  letter-spacing: 1px;
+  transform: translate(-50%,0%);
+  color: #000000;
   transition: .2s ease;
+  color: #ffffff;
+  background: rgba(244, 94, 37, 0.25);
+  opacity: 0;
+  z-index: 1;
 }
+
+.add-to-cart__add-more.add-to-cart__add-more--move {
+  animation: move .3s ease;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(-50%,0%);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%,-150%);
+    opacity: 0;
+  }
+}
+
+.add-to-cart__added {
+  position: absolute;
+  bottom: 0;
+  right: 50%;
+  padding: .5em .8em;
+  letter-spacing: 1px;
+  transform: translate(50%,100%);
+  color: #000000;
+  transition: .2s ease;
+  color: #ffffff;
+  background: rgba(244, 94, 37, 0.65);
+}
+
+  .add-to-cart__added.isAdded {
+    transform: translate(50%,-50%);
+  }
 
 .add-to-cart__added--show {
   display: block;

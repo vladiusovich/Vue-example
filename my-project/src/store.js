@@ -196,6 +196,7 @@ export const store = new Vuex.Store({
       var index = prList.indexOf(item);
       prList.splice(index,1);
       item.isAdd = false;
+      item.count = 1;
     }
   }
 });

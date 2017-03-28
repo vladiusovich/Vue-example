@@ -224,12 +224,14 @@ export default {
 }
 
 .personal-data__adress {
+  visibility:  hidden;
   opacity: 0;
   transform: translateY(100%);
   transition: all .2s ease;
 }
 
 .personal-data__adress.show-slide {
+  visibility: visible;
   opacity: 1 !important;
   transform: translateX(0) !important;
 }
