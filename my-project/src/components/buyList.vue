@@ -7,11 +7,9 @@
               <transition-group tag="ul" name="list-complete" class="products_list" v-if="productsFilter.length > 0">
                 <li class="products_item" v-for="item in productsFilter" :key="item"  v-bind:class="{ isAdd: item.isAdd }">
                       <div class="products_item__heading">
-                        <div class="wrap-img"><img
-                          v-bind:src=item.imgSrc
-                          alt=""></div>
+                        <div class="wrap-img"><img v-bind:src=item.imgSrc  alt=""></div>
                           <div class="wrap_title">
-                            <span class="products_item__name">{{item.name}}</span>
+                            <span class="products_item__name"><router-link :to="{ name: 'ProductPage', params: { productName: item.name, product: item }}">{{item.name}}</router-link></span>
                             <span class="products_item__cost">{{item.cost + " бел.р"}}</span>
                             <span class="products_item__available">{{item.availabile}}</span>
                           </div>
@@ -24,7 +22,7 @@
                       <span v-bind:class="{ 'add-to-cart--hiddesn': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
                       <span class="add-to-cart__add-more">+1</span>
                     </button>
-                  <div  v-bind:class="{ isAdded: item.isAdd }" class="add-to-cart__added"><span>В корзине</span></div>
+                  <div  v-bind:class="{ isAdded: item.isAdd }" class="add-to-cart__added"><span><router-link to="/privateList">В корзине</router-link></span></div>
                   </li>
             </transition-group>
           </div>
@@ -35,6 +33,9 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  import VueRouter from 'vue-router';
+  Vue.use(VueRouter);
 
 export default {
   t: false,
@@ -52,9 +53,6 @@ export default {
     }
   },
   computed: {
-    productsList () {
-      return  this.$store.state.productsList;
-    },
     productsFilter: function() {
       var self = this;
       return  this.$store.state.productsList.filter(function(item) {
@@ -86,15 +84,14 @@ export default {
       console.log(t);
       t.classList.remove("add-to-cart__add-more--move");
     },
+
       //Сделано по тупому. Нельзя так. Найди нормальный способ
         addToBuyList: function(item, event) {
-          var t = event.target;
+          var t = event.currentTarget.lastChild;
           t.classList.add("add-to-cart__add-more--move");
           setTimeout(function () {
             t.classList.remove("add-to-cart__add-more--move");
-            console.log("setTimeout");
           },300);
-          console.log(t);
 
 
           var prList = this.$store.state.privateListEmpty;
@@ -117,11 +114,7 @@ export default {
         }
       },
   created: function () {
-  },
-  components: {
-//    todoList
   }
-
 }
 </script>
 
@@ -399,20 +392,33 @@ ul {
   position: absolute;
   bottom: 0;
   right: 50%;
-  padding: .5em .8em;
-  letter-spacing: 1px;
+
   transform: translate(50%,100%);
-  color: #000000;
   transition: .2s ease;
   color: #ffffff;
   background: rgba(244, 94, 37, 0.65);
 }
 
+  .add-to-cart__added a {
+    display: inline-block;
+    color: #ffffff;
+    padding: .5em .8em;
+    letter-spacing: 1px;
+  }
+
+
   .add-to-cart__added.isAdded {
     transform: translate(50%,-50%);
   }
 
-.add-to-cart__added--show {
+  .add-to-cart__added.isAdded:hover {
+    background: rgba(244, 94, 37, 0.82);
+    /*text-decoration: underline;*/
+
+  }
+
+
+  .add-to-cart__added--show {
   display: block;
 }
 

@@ -2,7 +2,6 @@
   <div class="private-list__wrap">
     <div class="private-list">
       <p class="private-list__basket">Корзина</p>
-      <label>Поиск: </label><input type="text" v-model="searchQuery">
       <ul>
         <li v-for="ar in array "> {{ar.name}}</li>
       </ul>
@@ -31,7 +30,8 @@
               </div>
             </td>
             <td class="goods-table__cell__amount">
-              <select name="" id="" v-model="item.count"> <option  v-for="n in 10">{{n}}</option></select>
+              <input type="number" v-model="item.count" min="1">
+              <!--<select name="" id="" v-model="item.count"> <option  v-for="n in 10">{{n}}</option></select>-->
             </td>
             <td class="goods-table__cell__price">
               <div class="goods-table-cell__line_price">{{item.cost}} {{currency}} </div>
@@ -106,7 +106,9 @@ export default {
       hoverText: "Это вы",
       byProp: 'name',
       searchQuery: '',
-      search: ""
+      search: "",
+      number: 0,
+      animatedNumber: 0
     }
   },
   computed: {
@@ -144,11 +146,11 @@ export default {
       var result = products.reduce(function (sum, item) {
         return sum + parseInt(item.cost)*item.count;
       }, 0);
+      this.number = result;
       return result;
     }
   },
   methods: {
-
         addItem: function() {
           this.list.push({ name: this.header });
         },
@@ -159,10 +161,7 @@ export default {
           this.isComplete = !this.isComplete;
           console.log(this.isComplete);
         }
-      },
-  created: function() {
-//               this.list = this.$store.state.productsList;
-              }
+      }
 }
 </script>
 
@@ -311,6 +310,10 @@ a {
   text-align: center;
 }
 
+.goods-table__cell__amount input {
+  width: 50%;
+}
+
 .goods-table-cell__line_price {
   font-size: .75rem;
 }
@@ -343,7 +346,7 @@ a {
 }
 
 #table td input {
-  width: 85%;
+  width: 40%;
   border-radius: 0;
        }
 

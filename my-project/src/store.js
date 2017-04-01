@@ -197,6 +197,25 @@ export const store = new Vuex.Store({
       prList.splice(index,1);
       item.isAdd = false;
       item.count = 1;
+    },
+    clearBasket: function (state) {
+      var productsList = state.productsList.filter(function (item) {
+        return item.isAdd;
+      });
+      for (var item of productsList) {
+        item.isAdd = !item.isAdd;
+        // item.count = 1;
+      };
+      state.privateListEmpty =  [];
+    },
+    resetCount: function (state) {
+      var prList = state.productsList.filter(function (item) {
+        return item.count != 1;
+      });
+      for (var item of prList) {
+        item.count = 1;
+      };
+
     }
   }
 });

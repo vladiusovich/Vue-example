@@ -1,10 +1,15 @@
 <template>
   <div class="buy-list">
     <div class="buy-list__icon"><span><router-link to="/privateList">Корзина</router-link> </span><span class="buy-list__count">{{countOfProducts}}</span></div>
-    <div class="buy-list__wrap"  v-bind:class="{ show: isShow }">
-      <ul class="buy-list__list" v-if="productsList.length > 0">
-        <li class="list__item" v-for="item in productsList"><span >{{item.name}} ({{item.count}})</span> <span class="delete" v-on:click="deleteItem(item)">X</span></li>
-      </ul>
+    <div class="buy-list__wrap">
+      <div class="list__wrap" v-if="productsList.length > 0">
+        <ul class="buy-list__list">
+          <li class="list__item" v-for="item in productsList"><span >{{item.name}} ({{item.count}})</span> <span class="delete" v-on:click="deleteItem(item)">X</span></li>
+        </ul>
+        <div class="buy-list__actions">
+          <button class="buy-list__clear" @click="clearBasket" >Очистить</button>
+        </div>
+      </div>
       <span class="buy-list__list--empty"  v-else>Корзина пуста</span>
     </div>
   </div>
@@ -51,6 +56,10 @@
       },
       deleteItem: function (item) {
         this.$store.commit('deleteItem', item);
+      },
+      clearBasket: function () {
+        this.$store.commit('clearBasket');
+        this.$store.commit('resetCount');
       }
     }
   }
@@ -83,6 +92,8 @@
     right: 0;
     z-index: 100;
     opacity: 0;
+    background: white;
+    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
     transform: translateX(100%);
     transition: all .2s ease .15s;
   }
@@ -118,9 +129,10 @@
 
   .buy-list__list {
     width: 350px;
+    margin-top: 0;
+    margin-bottom: 1em;
     padding: 0;
-    background: white;
-    box-shadow: 0 1px 4px 3px rgba(0, 0, 0, 0.04);
+
   }
 
   .buy-list__list--empty {
@@ -143,6 +155,16 @@
     margin-left: 6px;
     -webkit-transition: border-color 0.2s ease;
     transition: border-color 0.2s ease;
+  }
+
+  .buy-list__clear {
+    border: solid 1px #a8a8a8;
+    color: black;
+    padding: .4em 1em;
+    margin: 0 0 1em 1em;
+    background: rgba(100, 100, 100, 0);
+    cursor: pointer;
+    transition: .2s ease;
   }
 
   .list__item {
