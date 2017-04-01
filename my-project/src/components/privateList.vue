@@ -22,7 +22,7 @@
                   <img v-bind:src=item.imgSrc >
                 </div>
                 <div class="goods-table-cell__wrap">
-                  <span class="goods-table__name">{{item.name}}</span>
+                  <span class="goods-table__name"><router-link :to="{ name: 'ProductPage', params: { productName: item.name, product: item }}">{{item.name}}</router-link></span>
                   <p class="goods-table__describe">{{item.describe}}</p>
                   <p class="goods-table__availabile">{{item.availabile}}</p>
                 </div>
@@ -84,6 +84,10 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  import VueRouter from 'vue-router';
+  Vue.use(VueRouter);
+
 export default {
   name: 'Name',
   data: function() {
@@ -150,7 +154,7 @@ export default {
       if (result > 0) {
           return result;
       }
-      return "Нежелательный результат";
+      return 0;
     }
   },
   methods: {
@@ -294,6 +298,18 @@ a {
 .goods-table__name {
   font-size: .9rem;
   font-weight: 600;
+}
+
+.goods-table__name a {
+  color: black;
+}
+
+.goods-table__name a {
+  color: black;
+}
+
+.goods-table__name a:hover {
+  text-decoration: underline;
 }
 
 .goods-table-cell__img > img {
