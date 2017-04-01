@@ -130,7 +130,7 @@
   .buy-list__list {
     width: 350px;
     margin-top: 0;
-    margin-bottom: 1em;
+    margin-bottom: 0;
     padding: 0;
 
   }
@@ -158,13 +158,18 @@
   }
 
   .buy-list__clear {
-    border: solid 1px #a8a8a8;
-    color: black;
+    float: right;
+    border: none;
+    color: #4b84da;
     padding: .4em 1em;
-    margin: 0 0 1em 1em;
+    /*margin: 0 0 1em 1em;*/
     background: rgba(100, 100, 100, 0);
     cursor: pointer;
     transition: .2s ease;
+  }
+
+  .buy-list__clear:hover {
+    text-decoration: underline;
   }
 
   .list__item {

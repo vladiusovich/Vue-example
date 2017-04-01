@@ -147,7 +147,10 @@ export default {
         return sum + parseInt(item.cost)*item.count;
       }, 0);
       this.number = result;
-      return result;
+      if (result > 0) {
+          return result;
+      }
+      return "Нежелательный результат";
     }
   },
   methods: {

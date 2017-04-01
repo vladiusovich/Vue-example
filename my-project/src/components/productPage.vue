@@ -2,13 +2,16 @@
 
   <div class="product">
     <div class="product__heading">
-      <div class="product__wrap-img"><img v-bind:src=$route.params.product.imgSrc  alt=""></div>
+      <div class="product__wrap-img"><img v-bind:src=product.imgSrc  alt=""></div>
       <div class="product__wrap_title">
-        <span class="product__name">{{$route.params.product.name}}</span>
-        <span class="product__cost">{{$route.params.product.cost + " бел.р"}}</span>
-        <button class="product__button">{{basketText}}</button>
-        <span class="product__available">{{$route.params.product.availabile}}</span>
-        <p class="product_text">{{$route.params.product.describe}}</p>
+        <span class="product__name">{{product.name}}</span>
+        <span class="product__cost">{{product.cost + " бел.р"}}</span>
+        <button class="product__button" :class="{ 'product__button--isAdd': this.product.isAdd}" @click="addToBuyList(product, $event)">{{basketText}}
+
+          <span class="add-to-cart__add-more">+1</span>
+        </button>
+        <span class="product__available">{{product.availabile}}</span>
+        <p class="product_text">{{product.describe}}</p>
       </div>
     </div>
   </div>
@@ -19,6 +22,7 @@
   export default {
     data: function() {
       return {
+        product: {},
         currency: " руб.",
         isComplete: false,
         searchQuery: '',
@@ -33,8 +37,7 @@
         hoverText: "Это вы",
         byProp: 'name',
         searchQuery: '',
-        search: "",
-        basketText: "В корзину"
+        search: ""
       }
     },
     computed: {
@@ -71,17 +74,23 @@
         return result;
       },
       basketText: function() {
-          console.log($route.params.product.isAdd);
-          if ($route.params.product.isAdd) {
-              return "В корзине";
+          if (this.product.isAdd) {
+              return "Добавлено";
           } else {
               return "Добавить в козину";
           }
       }
-    },  
+    },
     methods: {
-      addItem: function() {
-        this.list.push({ name: this.header });
+      addToBuyList: function(item, event) {
+          var t = event.currentTarget.lastChild;
+          t.classList.add("add-to-cart__add-more--move");
+          setTimeout(function () {
+            t.classList.remove("add-to-cart__add-more--move");
+          },300);
+
+
+          this.$store.commit('addItem', item);
       },
       deleteItem: function (item) {
         this.$store.commit('deleteItem', item);
@@ -92,7 +101,11 @@
       }
     },
       created: function () {
-        console.log("");
+        var productId = this.$route.params.product.id;
+        this.product = this.$store.state.productsList.filter(function(item)   {
+          return item.id === productId;
+        })[0];
+        console.log(this.product.isAdd);
     }
   }
 </script>
@@ -176,6 +189,16 @@
 
   .product__available {
     font-size: .8rem;
+  }
+
+  .product__button {
+    position: relative;
+  }
+
+  .product__button--isAdd {
+    border: transparent;
+    background: rgba(244, 94, 37, 0.65);
+    color: #ffffff;
   }
 
   input:focus {

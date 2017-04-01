@@ -18,7 +18,7 @@
                    <div class="products_item__describe">
                      <p class="product_text">{{item.describe}}</p>
                    </div>
-                    <button type="submit" class="add-to-cart" @click.alt="startMove" v-on:click="addToBuyList(item,$event)" >
+                    <button type="submit" class="add-to-cart" v-on:click="addToBuyList(item,$event)" >
                       <span v-bind:class="{ 'add-to-cart--hiddesn': item.isAdd }" class="add-to-cart__img"><img src="./../assets/shopping_cart.png" alt=""></span>
                       <span class="add-to-cart__add-more">+1</span>
                     </button>
@@ -68,23 +68,6 @@ export default {
 
   },
   methods: {
-        startMove: function (event) {
-          var t = event.target;
-          console.log(t);
-          t.classList.add("add-to-cart__add-more--move");
-          console.log(t);
-          setTimeout(function () {
-            t.classList.remove("add-to-cart__add-more--move");
-            console.log("setTimeout");
-          },300);
-          console.log(t);
-        },
-    endMove: function (event) {
-      var t = event.target;
-      console.log(t);
-      t.classList.remove("add-to-cart__add-more--move");
-    },
-
       //Сделано по тупому. Нельзя так. Найди нормальный способ
         addToBuyList: function(item, event) {
           var t = event.currentTarget.lastChild;
@@ -93,19 +76,23 @@ export default {
             t.classList.remove("add-to-cart__add-more--move");
           },300);
 
+          this.$store.commit('addItem', item);
 
-          var prList = this.$store.state.privateListEmpty;
-          var index = prList.indexOf(item);
-          if (!item.isAdd) {
-            prList.push(item);
-            item.isAdd = true;
-            return;
-          } else if(item.isAdd) {
-            var count = parseInt(prList[index].count);
-            prList[index];
-            prList[index].count = count + 1;
-              return;
-            };
+//          var prList = this.$store.state.privateListEmpty;
+//          var privIndex = prList.indexOf(item);
+//          var privItem;
+//
+//          if (privIndex < 0) {
+//            prList.push(item);
+//            privIndex = prList.indexOf(item);
+//            prList[privIndex].isAdd = true;
+//            return;
+//          } else {
+//            var count = parseInt(prList[privIndex].count);
+//            prList[privIndex];
+//            prList[privIndex].count = count + 1;
+//              return;
+//            };
           },
         deleteFromByList: function(id) {
          var bl = this.buyList;
