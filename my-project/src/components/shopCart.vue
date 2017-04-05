@@ -86,6 +86,12 @@
     transition: all .5s ease;
   }
 
+  @media screen and (max-width: 1030px) {
+    .buy-list__icon > span:first-child {
+      display: none;
+    }
+  }
+
   .buy-list__wrap {
     position: absolute;
     top: 100%;

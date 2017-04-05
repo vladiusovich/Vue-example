@@ -173,6 +173,19 @@
     margin-left: 250px;
   }
 
+
+  @media screen and (max-width: 1030px) {
+    .product__wrap-img {
+      width: 50% !important;
+      float: none !important;
+      margin: auto;
+    }
+    .product__wrap_title {
+      margin: 1rem 0 0 0;
+    }
+
+  }
+
   .product__wrap_title span, .product__button {
     display: block;
     margin-bottom: 15px;

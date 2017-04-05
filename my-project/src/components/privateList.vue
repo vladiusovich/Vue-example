@@ -77,7 +77,8 @@
       </div>
       <p class="">Общая сумма заказа:</p>
       <p><b>{{getAllPrice}} {{currency}}</b></p>
-      <button class="submit" v-on:click="makeDeal">Заказать</button>
+      <button class="submit" v-on:click="makeDeal"  >Заказать</button>
+      <span class="personal-data__warning" :class=" { 'isShow': isWarning } "> {{basketWarning}} </span>
     </div>
   </div>
 
@@ -94,6 +95,8 @@ export default {
     return {
       currency: " руб.",
       isComplete: false,
+      isWarning: false,
+      basketWarning: "",
       searchQuery: '',
       testAnaimte: '',
       userName: 'Владислав Усович',
@@ -165,8 +168,14 @@ export default {
           this.$store.commit('deleteItem', item);
         },
         makeDeal: function () {
+          var privateBasket = this.$store.state.privateListEmpty;
+          if (privateBasket.length === 0) {
+              this.isWarning = true;
+              this.basketWarning = "Корзина пуста";
+              return;
+          }
           this.isComplete = !this.isComplete;
-          console.log(this.isComplete);
+
         }
       }
 }
@@ -196,7 +205,10 @@ export default {
   display: inline-block;
   padding: 0 2em;
   border: 1px solid rgba(148, 148, 148, 0.21);
+
+
 }
+
 
 .personal-data {
   width: 30%;
@@ -206,6 +218,43 @@ export default {
   border: 1px solid rgba(148, 148, 148, 0.21);
   box-sizing: border-box;
 }
+
+@media screen and (max-width: 1030px) {
+
+  .private-list, .personal-data {
+    width: 100% !important;
+    float: none !important;
+  }
+
+  .private-list {
+    /*padding: .2em !important;*/
+  }
+  .personal-data {
+    margin-top: 1rem !important;
+  }
+
+  .goods-table-cell__img {
+    display: none;
+  }
+
+  .goods-table-cell__wrap {
+    padding: 0 !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .private-list__wrap {
+    width: 100% !important;
+    padding: .5em!important;
+  }
+
+  #table td {
+    vertical-align: center !important;
+  }
+}
+
+
+
 
 .personal-data select {
   border: 1px solid rgba(148, 148, 148, 0.21);
@@ -240,6 +289,23 @@ export default {
   visibility: visible;
   opacity: 1 !important;
   transform: translateX(0) !important;
+}
+
+span.personal-data__warning {
+  position: static;
+  display: inline-block;
+  margin-left: .8em;
+  font-size: .8rem;
+  padding: .5em 1em;
+  background: red;
+  color: white;
+  border-radius: 20px;
+  opacity: 0;
+  transition: .2s ease;
+}
+
+span.personal-data__warning.isShow {
+  opacity: 1;
 }
 
 h1, h2 {
@@ -318,7 +384,7 @@ a {
 }
 
 .goods-table-cell__wrap {
- padding-left: 80px;
+  padding-left: 80px;
   font-size: .8rem;
 }
 
@@ -330,7 +396,8 @@ a {
 }
 
 .goods-table__cell__amount input {
-  width: 50%;
+  min-width: 65px;
+  max-width: 65px;
 }
 
 .goods-table-cell__line_price {

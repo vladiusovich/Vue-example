@@ -191,13 +191,22 @@ ul {
     width: 50%;
   }
 
+  @media screen and (max-width: 1030px) {
+    .products_list__search {
+      width: 100% !important;
+    }
+  }
+
   .products_list__search input {
     width: 100%;
+
   }
 
   .products_list__search input {
     padding: .8em 1em;
     font-size: 1rem;
+    box-sizing: border-box;
+
   }
 
   .products_item:hover, .products_item .isAdd:hover {
@@ -300,6 +309,13 @@ ul {
      box-sizing: border-box;
     z-index: 10;
 }
+
+  @media screen and (max-width: 600px) {
+    .header {
+      width: 100% !important;
+    }
+  }
+
 
 
 .navigation {
