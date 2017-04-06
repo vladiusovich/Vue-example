@@ -134,7 +134,7 @@
 
 
   .buy-list__list {
-    width: 350px;
+    width: 400px;
     margin-top: 0;
     margin-bottom: 0;
     padding: 0;

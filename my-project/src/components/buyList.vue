@@ -4,7 +4,7 @@
         <div class="products_list__search">
           <input type="text" v-model="searchQuery" placeholder="Введите название товара">
         </div>
-              <transition-group tag="ul" name="list-complete" class="products_list" v-if="productsFilter.length > 0">
+        <transition-group tag="ul" name="list-complete" class="products_list" v-if="productsFilter.length > 0">
                 <li class="products_item" v-for="item in productsFilter" :key="item"  v-bind:class="{ isAdd: item.isAdd }">
                       <div class="products_item__heading">
                         <div class="wrap-img"><img v-bind:src=item.imgSrc  alt=""></div>
@@ -42,7 +42,8 @@ export default {
   name: 'buyList',
   data: function() {
     return {
-      productListLocal: this.$store.state.productsList,
+      productListLocal: [],
+      privateListEmptyLocal: this.$store.state.privateListEmpty,
       searchQuery: '',
       isVisible: true,
       isError: false,
@@ -55,7 +56,7 @@ export default {
   computed: {
     productsFilter: function() {
       var self = this;
-      return  this.$store.state.productsList.filter(function(item) {
+      return  this.productListLocal.filter(function(item) {
         return item['name'].indexOf(self.searchQuery) !== -1;
       });
       },
@@ -75,25 +76,8 @@ export default {
           setTimeout(function () {
             t.classList.remove("add-to-cart__add-more--move");
           },300);
-
           this.$store.commit('addItem', item);
-
-//          var prList = this.$store.state.privateListEmpty;
-//          var privIndex = prList.indexOf(item);
-//          var privItem;
-//
-//          if (privIndex < 0) {
-//            prList.push(item);
-//            privIndex = prList.indexOf(item);
-//            prList[privIndex].isAdd = true;
-//            return;
-//          } else {
-//            var count = parseInt(prList[privIndex].count);
-//            prList[privIndex];
-//            prList[privIndex].count = count + 1;
-//              return;
-//            };
-          },
+         },
         deleteFromByList: function(id) {
          var bl = this.buyList;
           bl.splice(this.list.indexOf(id),1);
@@ -101,6 +85,22 @@ export default {
         }
       },
   created: function () {
+      //получить данные с сервера и записать локально
+    if (this.privateListEmptyLocal.length == 0) {
+      this.$http.get('http://localhost:3000/getProducts')
+        .then((response) => {
+        console.log('success');
+        this.$store.state.productsList = response.data;
+        this.productListLocal = response.data;
+        return response.data;
+    }, (response) => {
+        console.log('fail');
+        return response;
+      });
+    } else {
+      this.productListLocal = this.$store.state.productsList;
+    }
+
   }
 }
 </script>
